@@ -18,7 +18,8 @@ def getAchievement(achName):
 
 # pull data from COC
 logger.info('API Pull initiated...')
-url = 'https://api.clashofclans.com/v1/clans/%25CVCJR89/members'
+tag = 'CVCJR89'
+url = f'https://api.clashofclans.com/v1/clans/%25{tag}/members'
 headers = {'Accept':'application/json','Authorization':'Bearer ' + settings['supercell']['apiKey']}
 r = requests.get(url, headers=headers)
 data = r.json()
@@ -26,7 +27,7 @@ logger.info('API Pull complete')
 
 # write full json to sheet
 logger.info('Write member info to Sheet')
-gurl = 'https://script.google.com/macros/s/AKfycbzhXbO1CCcRuPzTU0mos7MowcucvclAKokkTiq91463xW1ftQEO/exec'
+gurl = settings['google']['webappUrl']
 payload = {'type':'members','data':data}
 r = requests.post(gurl,data=json.dumps(payload))
 logger.info('Google response: %s', r.status_code)
@@ -69,3 +70,4 @@ r = requests.post(gurl,data=json.dumps(payload))
 logger.info('Google response: %s', r.status_code)
 
 logger.info('Script to Google complete at ' + datetime.datetime.now().ctime())
+                      
